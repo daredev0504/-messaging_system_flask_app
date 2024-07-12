@@ -1,0 +1,64 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "This is a simple Messaging System API",
+      "version": "1.0.0",
+      "title": "Messaging System API",
+      "contact": {
+        "email": "support@example.com"
+      }
+    },
+    "host": "localhost:5000",
+    "basePath": "/api",
+    "tags": [
+      {
+        "name": "messaging",
+        "description": "Messaging operations"
+      }
+    ],
+    "schemes": [
+      "http"
+    ],
+    "paths": {
+      "/": {
+        "get": {
+          "tags": [
+            "messaging"
+          ],
+          "summary": "Send email or log time",
+          "description": "This endpoint can send an email or log the current time",
+          "operationId": "sendEmailOrLogTime",
+          "parameters": [
+            {
+              "name": "sendmail",
+              "in": "query",
+              "description": "Email address to send the email to",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "talktome",
+              "in": "query",
+              "description": "Flag to log the current time",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  

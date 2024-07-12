@@ -1,48 +1,41 @@
-from flask import Flask, request, jsonify
+# main.py
+
+from fastapi import FastAPI
 from celery import Celery
-import smtplib
-from datetime import datetime
-from flask_swagger_ui import get_swaggerui_blueprint
+from tasks import send_email_task
+import logging
 
-app = Flask(__name__)
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='/var/log/messaging_system.log', level=logging.INFO)
 
-# Configure Celery
-app.config['CELERY_BROKER_URL'] = 'amqp://localhost//'
-app.config['CELERY_RESULT_BACKEND'] = 'rpc://'
+app = FastAPI()
 
-celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config)
+@app.get('/sendmail')
+def sendmail(recipient: str):
+    try:
+        # Example URL: /sendmail?recipient=mailto:destiny@destinedcodes.com
+        if recipient.startswith('mailto:'):
+            recipient_email = recipient.replace('mailto:', '')
 
-SWAGGER_URL = '/swagger'
-API_URL = '/static/swagger.json'
-swaggerui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={'app_name': "Messaging System API"}
-)
-app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+            # Queue email task in Celery
+            send_email_task.delay(recipient_email, "Example email message")
 
-@celery.task
-def send_email(email):
-    server = smtplib.SMTP('localhost')
-    server.sendmail('from@example.com', email, 'This is a test email.')
-    server.quit()
+            return {'message': 'Email sending task queued.'}
+        else:
+            return {'error': 'Invalid recipient format.'}
 
-@app.route('/api', methods=['GET'])
-def index():
-    sendmail = request.args.get('sendmail')
-    talktome = request.args.get('talktome')
+    except Exception as e:
+        logger.error(f"Failed to queue email task: {str(e)}")
+        return {'error': 'Failed to queue email task.'}
 
-    if sendmail:
-        send_email.delay(sendmail)
-        return jsonify({"message": f"Email will be sent to {sendmail}"})
+@app.get('/talktome')
+def talktome():
+    try:
+        # Log current time
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        logger.info(f"Talk to me at {current_time}")
+        return {'message': f"Logged message at {current_time}"}
 
-    if talktome:
-        with open('/var/log/messaging_system.log', 'a') as f:
-            f.write(f"{datetime.now()}\n")
-        return jsonify({"message": "Logged current time."})
-
-    return jsonify({"message": "Specify either sendmail or talktome parameter."})
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    except Exception as e:
+        logger.error(f"Failed to log message: {str(e)}")
+        return {'error': 'Failed to log message.'}
