@@ -8,4 +8,4 @@ celery_app = Celery('app', broker=broker_url)
 
 
 # Register tasks
-celery_app.autodiscover_tasks(['app'])  # Replace 'app' with your module name
+celery_app.autodiscover_tasks(['messaging_system_flask_app'])  # Replace 'app' with your module name
