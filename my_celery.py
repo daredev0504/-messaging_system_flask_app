@@ -8,4 +8,4 @@ celery_app = Celery('app', broker=broker_url)
 
 
 # Register tasks
-celery_app.autodiscover_tasks(['tasks'])  # Replace 'app' with your module name
+celery_app.autodiscover_tasks(packages=None, related_name='tasks', force=False)
