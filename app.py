@@ -1,5 +1,5 @@
 # app.py
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from my_celery import celery_app
 from tasks import send_email_task
 import smtplib
