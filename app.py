@@ -1,7 +1,7 @@
 # app.py
 
 from fastapi import FastAPI
-from celery import Celery
+from my_celery import celery_app
 from tasks import send_email_task
 import logging
 

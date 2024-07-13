@@ -1,4 +1,4 @@
-from celery import Celery
+from my_celery import Celery
 
 # Broker URL format: 'amqp://username:password@host:port/virtual_host'
 broker_url = 'amqp://172.161.146.165/'
