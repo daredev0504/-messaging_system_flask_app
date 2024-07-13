@@ -1,5 +1,5 @@
 # app.py
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Query
 from my_celery import celery_app
 from tasks import send_email_task
 import smtplib
@@ -56,13 +56,11 @@ app = FastAPI()
 
 # Define the main endpoint
 @app.get('/')
-async def handle_request(request: Request):
+async def handle_request(sendmail: str = Query(None, description="Email address to send mail"), 
+                         talktome: bool = Query(False, description="Log the current time")):
     try:
-        sendmail_param = request.query_params.get('sendmail')
-        talktome_param = request.query_params.get('talktome')
-
-        if sendmail_param:
-            recipient_email = urllib.parse.unquote(sendmail_param)
+        if sendmail:
+            recipient_email = urllib.parse.unquote(sendmail)
             if recipient_email.startswith('mailto:'):
                 recipient_email = recipient_email.replace('mailto:', '')
 
@@ -75,7 +73,7 @@ async def handle_request(request: Request):
             send_email_task.delay(recipient_email, "I sent you an email regarding my RabbitMQ and Celery project")
             return {'message': 'Email sending task queued.'}
 
-        elif talktome_param is not None:
+        elif talktome:
             current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             logger.info(f"Talk to me at {current_time}")
             return {'message': f"Logged message at {current_time}"}
