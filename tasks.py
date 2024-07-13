@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(filename='/var/log/messaging_system.log', level=logging.INFO)
 
 
-@shared_task
+@celery.task
 def send_email_task(recipient_email, message):
     try:
         # SMTP server configuration (adjust as per your SMTP server)
