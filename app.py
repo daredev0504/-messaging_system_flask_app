@@ -11,7 +11,7 @@ import urllib.parse
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename='/var/log/messaging_system.log', level=logging.INFO)
 
-app = FastAPI()
+app = FastAPI(__name__)
 
 # Broker URL format: 'amqp://username:password@host:port/virtual_host'
 broker_url = 'amqp://tosingh:peranofo54@172.161.146.165:5672/rabbit'
