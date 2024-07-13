@@ -1,7 +1,7 @@
 # app.py
 
 from fastapi import FastAPI
-from my_celery import celery_app
+#from my_celery import celery_app
 #from tasks import send_email_task
 import smtplib
 from email.message import EmailMessage
@@ -12,6 +12,12 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(filename='/var/log/messaging_system.log', level=logging.INFO)
 
 app = FastAPI()
+
+# Broker URL format: 'amqp://username:password@host:port/virtual_host'
+broker_url = 'amqp://tosingh:peranofo54@172.161.146.165:5672/rabbit'
+
+# Create Celery instance
+celery_app = Celery(app.name, broker=broker_url)
 
 @celery_app.task
 def send_email_task(recipient_email, message):

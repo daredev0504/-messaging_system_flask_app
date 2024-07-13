@@ -1,5 +1,5 @@
 from celery import Celery
-import app
+
 # Broker URL format: 'amqp://username:password@host:port/virtual_host'
 broker_url = 'amqp://tosingh:peranofo54@172.161.146.165:5672/rabbit'
 
