@@ -1,6 +1,6 @@
 # tasks.py
 
-from celery import shared_task
+from celery import celery
 import smtplib
 from email.message import EmailMessage
 import logging
