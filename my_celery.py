@@ -7,6 +7,5 @@ broker_url = 'amqp://tosingh:peranofo54@172.161.146.165:5672/rabbit'
 # Create Celery instance
 celery_app = Celery('app', broker=broker_url)
 
-
 # Register tasks
 celery_app.task.Register(send_email_task) 
