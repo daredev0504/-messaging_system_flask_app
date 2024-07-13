@@ -1,6 +1,6 @@
 # tasks.py
 
-from Celery import celery
+from my_celery import celery_app
 import smtplib
 from email.message import EmailMessage
 import logging
@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(filename='/var/log/messaging_system.log', level=logging.INFO)
 
 
-@celery.task
+@celery_app.task
 def send_email_task(recipient_email, message):
     try:
         # SMTP server configuration (adjust as per your SMTP server)
