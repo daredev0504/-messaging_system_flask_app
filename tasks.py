@@ -13,15 +13,15 @@ logging.basicConfig(filename='/var/log/messaging_system.log', level=logging.INFO
 def send_email_task(recipient_email, message):
     try:
         # SMTP server configuration (adjust as per your SMTP server)
-        smtp_server = 'smtp.yourserver.com'
+        smtp_server = 'smtp.gmail.com'
         smtp_port = 587
-        smtp_user = 'your_smtp_username'
-        smtp_password = 'your_smtp_password'
+        smtp_user = 'petoski.ade@gmail.com'
+        smtp_password = 'kdqrxllljmvvxcvh'
 
         # Compose email message
         msg = EmailMessage()
         msg.set_content(message)
-        msg['Subject'] = 'Subject'
+        msg['Subject'] = 'Messaging using RabbitMQ and Celery'
         msg['From'] = smtp_user
         msg['To'] = recipient_email
 

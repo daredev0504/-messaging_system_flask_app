@@ -1,4 +1,4 @@
-# main.py
+# app.py
 
 from fastapi import FastAPI
 from celery import Celery
@@ -18,7 +18,7 @@ def sendmail(recipient: str):
             recipient_email = recipient.replace('mailto:', '')
 
             # Queue email task in Celery
-            send_email_task.delay(recipient_email, "Example email message")
+            send_email_task.delay(recipient_email, "I sent you an email regarding my rabbit mq and celery project")
 
             return {'message': 'Email sending task queued.'}
         else:
