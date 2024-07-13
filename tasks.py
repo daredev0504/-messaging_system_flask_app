@@ -1,6 +1,6 @@
 # tasks.py
 
-from celery import celery
+from Celery import celery
 import smtplib
 from email.message import EmailMessage
 import logging
