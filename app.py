@@ -13,6 +13,8 @@ app = FastAPI()
 @app.get('/sendmail')
 def sendmail(recipient: str):
     try:
+        recipient_email = recipient
+
         # Example URL: /sendmail?recipient=mailto:destiny@destinedcodes.com
         if recipient.startswith('mailto:'):
             recipient_email = recipient.replace('mailto:', '')
@@ -27,6 +29,8 @@ def sendmail(recipient: str):
     except Exception as e:
         logger.error(f"Failed to queue email task: {str(e)}")
         return {'error': 'Failed to queue email task.'}
+
+
 
 @app.get('/talktome')
 def talktome():
